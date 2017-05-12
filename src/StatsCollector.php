@@ -5,7 +5,6 @@ namespace HCAS;
 class StatsCollector
 {
     private $storagePath;
-    private $healthChecks = [];
 
     function __construct(string $storagePath)
     {
@@ -13,18 +12,6 @@ class StatsCollector
             mkdir($storagePath);
         }
         $this->storagePath = $storagePath;
-    }
-
-    function addHealthCheck(\Closure $healthCheck)
-    {
-        $this->healthChecks[] = $healthCheck;
-    }
-
-    function runHealthChecks()
-    {
-        return collect($this->healthChecks)->map(function ($item) {
-            return $item();
-        })->filter()->toArray();
     }
 
     function loadAll(): array
