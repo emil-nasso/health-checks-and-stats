@@ -6,6 +6,8 @@ class StatsCollector
 {
     private $storagePath;
 
+    private $callbacks = [];
+
     function __construct(string $storagePath)
     {
         if (!is_dir($storagePath)) {
@@ -17,17 +19,25 @@ class StatsCollector
     function loadAll(): array
     {
         $result = [];
+        foreach($this->callbacks as $name => $callback) {
+            $result['name'] = $callback();
+        }
         $files = glob($this->storagePath . "/*.log");
         foreach ($files as $filename) {
             $basename = basename($filename, ".log");
             $result[$basename] = $this->load($basename);
         }
+
         return $result;
     }
 
     function add(string $key, $value)
     {
         file_put_contents($this->getFilePath($key), json_encode($value) . PHP_EOL, FILE_APPEND | LOCK_EX);
+    }
+
+    function addCallback($name, \Closure $callback){
+        $this->callbacks[$name] = $callback;
     }
 
     function load($key)
