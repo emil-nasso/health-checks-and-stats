@@ -1,0 +1,8 @@
+{
+  "name": "emil-nasso/health-checks-and-stats",
+  "autoload": {
+    "psr-4": {
+      "HCAS\\": "src/"
+    }
+  }
+}
