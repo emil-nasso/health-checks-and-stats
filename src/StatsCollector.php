@@ -20,7 +20,7 @@ class StatsCollector
     {
         $result = [];
         foreach($this->callbacks as $name => $callback) {
-            $result['name'] = $callback();
+            $result[$name] = $callback();
         }
         $files = glob($this->storagePath . "/*.log");
         foreach ($files as $filename) {
